@@ -5,41 +5,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Salle {
-   private String nom;
-   private Set<Enigme> enigme;
-   private int tempsLimite;
-   private boolean estTerminee;
+class Salle {
+    private String nom;
+    private Set<Enigme> enigmes;
+    private int tempsLimite;
+    private boolean estTerminee;
 
     public Salle(String nom, int tempsLimite) {
-         this.nom = nom;
-         this.enigme = new HashSet<>(enigme);
-         this.tempsLimite = tempsLimite;
-         this.estTerminee = false;
+        this.nom = nom;
+        this.enigmes = new HashSet<>();
+        this.tempsLimite = tempsLimite;
+        this.estTerminee = false;
     }
 
-    public void ajouterEnigme(Enigme e){
-        if(!enigme.contains(e)){
-            this.enigme.add(e);
+    public void ajouterEnigme(Enigme e) {
+        if (e != null && !enigmes.contains(e)) {
+            this.enigmes.add(e);
         }
-
     }
 
-
-
-
-    public resoudreEnigme(int index, String tentative){
-        if(index < 0 || index >= enigme.size()){
+    public boolean resoudreEnigme(int index, String tentative) {
+        if (index < 0 || index >= enigmes.size()) {
             throw new IndexOutOfBoundsException("Index d'énigme invalide");
         }
-        Enigme e = (Enigme) enigme.get(index);
+
+        List<Enigme> listeEnigmes = new ArrayList<>(enigmes);
+        Enigme e = listeEnigmes.get(index);
         return e.resoudre(tentative);
     }
 
-    public estTerminee(){
-        for(Object obj : enigme){
-            Enigme e = (Enigme) obj;
-            if(!e.estResolue()){
+
+    public boolean estTerminee() {
+        for (Enigme e : enigmes) {
+            if (!e.estResolue()) {
                 return false;
             }
         }
@@ -47,19 +45,44 @@ public class Salle {
         return true;
     }
 
-    public afficherEnigmeNonResolue(){
-        for(Object obj : enigme){
-            Enigme e = (Enigme) obj;
-            if(!e.estResolue()){
+    public void afficherEnigmeNonResolue() {
+        boolean aucuneNonResolue = true;
+        for (Enigme e : enigmes) {
+            if (!e.estResolue()) {
                 System.out.println(e);
-                return;
+                aucuneNonResolue = false;
             }
         }
-        System.out.println("Toutes les énigmes sont résolues !");
+        if (aucuneNonResolue) {
+            System.out.println("Toutes les énigmes sont résolues !");
+        }
+    }
+
+    public void afficherToutesEnigmes() {
+        System.out.println("\n🧩 Énigmes dans " + nom + " :");
+        List<Enigme> listeEnigmes = new ArrayList<>(enigmes);
+        for (int i = 0; i < listeEnigmes.size(); i++) {
+            System.out.println((i + 1) + ". " + listeEnigmes.get(i));
+        }
+    }
+
+
+    public Set<Enigme> getEnigmes() {
+        return enigmes;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public int getTempsLimite() {
+        return tempsLimite;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Salle: " + nom + " (Temps limite: " + tempsLimite + " min, " +
+                enigmes.size() + " énigmes)";
     }
 }
+
