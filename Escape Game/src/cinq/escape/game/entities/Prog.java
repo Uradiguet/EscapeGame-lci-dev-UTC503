@@ -6,7 +6,7 @@ import cinq.escape.game.entities.Salle;
 import java.util.Scanner;
 
 class Prog {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // Correction de la syntaxe : new Enigme() au lieu de new()
         Enigme e1 = new Enigme("KFC", "Que signifie KFC ?", "Kentucky Fried Chicken");
         Enigme e2 = new Enigme("GPS", "Que signifie GPS ?", "Global Positioning System");

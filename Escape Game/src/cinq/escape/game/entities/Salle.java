@@ -19,9 +19,14 @@ class Salle {
     }
 
     public void ajouterEnigme(Enigme e) {
-        if (e != null && !enigmes.contains(e)) {
-            this.enigmes.add(e);
+        //exception si e est null ou déjà dans la liste
+        if(e == null) {
+            throw new IllegalArgumentException("La liste des énigmes n'a pas été initialisée.");
         }
+        if(enigmes.contains(e)){
+            throw new IllegalArgumentException("L'énigme est déjà dans la liste.");
+        }
+        this.enigmes.add(e);
     }
 
     public boolean resoudreEnigme(int index, String tentative) {
